@@ -1,6 +1,7 @@
+import os
 from pymongo import MongoClient
 
-client = MongoClient("mongodb+srv://test:test@cluster0.qcaml.azure.mongodb.net/<dbname>?retryWrites=true&w=majority")
+client = MongoClient(os.environ.get('MONGO_KEY'))
 
 chat = client.get_database("Chat")
 users = chat.get_collection("users")
