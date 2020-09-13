@@ -9,6 +9,9 @@ A chatroom.
 
 ## General info
 This is a chat room. Enter a nickname and a room name before choosing to create or join a room.
+
+The messages in each room can only be seen by other visitors currently in the room.
+
 Every nickname can only be used once and you cannot create a room that already exists.
 
 ## Technologies
