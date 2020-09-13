@@ -1,0 +1,35 @@
+.msg-container{
+    margin-top: auto;
+    margin-bottom: auto;
+    margin-right: 10px;
+    border-radius: 25px;
+    background-color: aqua;
+    padding: 10px;
+    position: relative;
+}
+
+.other-msg{
+    margin-top: auto;
+    margin-bottom: auto;
+    margin-right: 10px;
+    border-radius: 25px;
+    background-color: yellow;
+    padding: 10px;
+    position: relative;
+}
+
+.self{
+    position: absolute;
+    right:0;
+    bottom: -15px;
+    color: black;
+    font-size: 10px;
+}
+
+.others{
+    position: absolute;
+    left:0;
+    bottom: -15px;
+    color: black;
+    font-size: 10px;
+}

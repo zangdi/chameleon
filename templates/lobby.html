@@ -3,14 +3,20 @@
 {% block body %}
 
 <div class="container">
-    <h3>No message yet</h3>
-    <div class="message_holder"></div>
+    <h1>Lobby</h1>
+    <div class="card">
+        <div class="card-body">
+            <div class="no-msg">No messages yet</div>
+            <div class="message_holder"></div>
+        </div>
+    </div>
 
-    <form method="POST" action="">
+    <br>
+    <form method="POST" id="form">
         {{ form.csrf_token }}
         <div class="form-group">
             {{ form.msg.label }}
-            <input type="text" class="message" placeholder="Messages"/>
+            {{ form.msg(class="form-control", id="message")}}
         </div>
 
         {{ form.send(class="btn btn-primary") }}
@@ -22,29 +28,42 @@
     <script 
         src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.7.3/socket.io.min.js"
     ></script>
+    <script 
+        src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js"
+    ></script>
     <script type="text/javascript">
         var socket = io.connect('http://' + document.domain + ':' + location.port);
 
         socket.on( 'connect', function() {
-            socket.emit( 'my event', {
-                data: 'User Connected'
-            } )
-            var form = $( 'form' ).on( 'submit', function( e ) {
+            socket.emit( 'join', {
+                user : '{{ user }}',
+                room : '{{ room }}'
+            });
+
+            let user_input = document.getElementById('message');
+
+            document.getElementById('form').onsubmit = function(e) {
                 e.preventDefault()
-                let user_name = '{{ user }}'
-                let user_input = $( 'input.message' ).val()
                 socket.emit( 'my event', {
-                    user : user_name,
-                    message : user_input
+                    user : '{{ user }}',
+                    room : '{{ room }}',
+                    message : user_input.value
                 } )
-                $( 'input.message' ).val( '' ).focus()
-            } )
-            } )
-            socket.on( 'my response', function( msg ) {
-            console.log( msg )
+                user_input.value = '';
+                user_input.focus();
+            };
+        });
+        
+        socket.on('my response', function(msg) {
+            console.log(msg)
             if( typeof msg.message !== 'undefined' ) {
-                $( 'h3' ).remove()
-                $( 'div.message_holder' ).append( '<div>' + msg.user + ': ' + msg.message + '</div>')
+                $('div.no-msg').remove();
+
+                if (msg.user == '{{ user }}') {
+                    $('div.message_holder').append('<div class="d-flex justify-content-end mb-4"><div class="msg-container">' + msg.message + '<span class="self">You</span></div></div>');
+                } else {
+                    $('div.message_holder').append('<div class="d-flex justify-content-start mb-4"><div class="other-msg">' + msg.message + '<span class="others">' + msg.user + '</span></div></div>');
+                }
             }
         })
     </script>

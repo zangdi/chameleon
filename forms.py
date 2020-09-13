@@ -9,5 +9,5 @@ class UserForm(FlaskForm):
     join = SubmitField('Join')
 
 class ChatBox(FlaskForm):
-    msg = TextAreaField('Message')
+    msg = StringField('Message')
     send = SubmitField('Send')
