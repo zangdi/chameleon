@@ -34,8 +34,8 @@
 
         var socket = io.connect();
 
-        socket.on( 'connect', function() {
-            socket.emit( 'join', {
+        socket.on('connect', function() {
+            socket.emit('join', {
                 user : '{{ user }}',
                 room : '{{ room }}'
             });
@@ -44,7 +44,7 @@
 
             document.getElementById('form').onsubmit = function(e) {
                 e.preventDefault()
-                socket.emit( 'my event', {
+                socket.emit('my event', {
                     user : '{{ user }}',
                     room : '{{ room }}',
                     message : user_input.value
@@ -56,7 +56,7 @@
         
         socket.on('my response', function(msg) {
             console.log(msg)
-            if( typeof msg.message !== 'undefined' ) {
+            if (typeof msg.message !== 'undefined') {
                 $('div.no-msg').remove();
 
                 if (msg.user == '{{ user }}') {
