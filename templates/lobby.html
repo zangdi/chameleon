@@ -2,25 +2,24 @@
 
 {% block body %}
 
-<div class="container">
+<div class="container-fluid">
     <h1>Lobby</h1>
     <div class="card">
-        <div class="card-body">
+        <div class="card-body msg_card_body">
             <div class="no-msg">No messages yet</div>
-            <div class="message_holder"></div>
+            <div class="message_holder" id="holder"></div>
+        </div>
+        <div class="card-footer">
+            <form method="POST" id="form">
+                {{ form.csrf_token }}
+                <div class="form-group">
+                    {{ form.msg(class="form-control", id="message", placeholder="Enter a message")}}
+                </div>
+        
+                {{ form.send(class="btn btn-primary") }}
+            </form>
         </div>
     </div>
-
-    <br>
-    <form method="POST" id="form">
-        {{ form.csrf_token }}
-        <div class="form-group">
-            {{ form.msg.label }}
-            {{ form.msg(class="form-control", id="message")}}
-        </div>
-
-        {{ form.send(class="btn btn-primary") }}
-    </form>
 
     <script 
         src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"
@@ -32,6 +31,7 @@
         src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js"
     ></script>
     <script type="text/javascript">
+
         var socket = io.connect('http://' + document.domain + ':' + location.port);
 
         socket.on( 'connect', function() {
@@ -60,10 +60,15 @@
                 $('div.no-msg').remove();
 
                 if (msg.user == '{{ user }}') {
-                    $('div.message_holder').append('<div class="d-flex justify-content-end mb-4"><div class="msg-container">' + msg.message + '<span class="self">You</span></div></div>');
+                    $('div.message_holder').append('<div class="d-flex justify-content-end mb-4" id="' + msg.id + '"><div class="msg-container">' + msg.message + '<span class="self">You</span></div></div>');
                 } else {
-                    $('div.message_holder').append('<div class="d-flex justify-content-start mb-4"><div class="other-msg">' + msg.message + '<span class="others">' + msg.user + '</span></div></div>');
+                    $('div.message_holder').append('<div class="d-flex justify-content-start mb-4" id="' + msg.id + '"><div class="other-msg">' + msg.message + '<span class="others">' + msg.user + '</span></div></div>');
                 }
+                
+                function setFocusOnDivWithId(elementId) {
+                    const scrollIntoViewOptions = { behavior: "smooth", block: "center" };
+                    document.getElementById(elementId).scrollIntoView(scrollIntoViewOptions);
+                };
             }
         })
     </script>

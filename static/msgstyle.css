@@ -33,3 +33,8 @@
     color: black;
     font-size: 10px;
 }
+
+.card-body{
+    overflow-y: scroll;
+    height: 50vh;
+}

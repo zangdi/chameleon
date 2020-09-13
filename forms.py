@@ -1,3 +1,4 @@
+import re
 from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField, TextAreaField
 from wtforms.validators import DataRequired
@@ -11,3 +12,7 @@ class UserForm(FlaskForm):
 class ChatBox(FlaskForm):
     msg = StringField('Message')
     send = SubmitField('Send')
+
+class ActionForm(FlaskForm):
+    start = SubmitField('Start')
+    leave = SubmitField('Leave')
